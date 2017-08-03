@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5796b301-eb42-46b1-a176-b43ebf862327" name="Default" comment="update game scene">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/game-bg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/hamster.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/hamsters.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/menu-bg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/image/obstacle.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/Hamster-Game.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="5796b301-eb42-46b1-a176-b43ebf862327" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -49,8 +40,8 @@
       <file leaf-file-name="Game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/scenes/Game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="42" lean-forward="true" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+            <state relative-caret-position="240">
+              <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -333,7 +324,7 @@
       <option name="presentableId" value="Default" />
       <updated>1501515492900</updated>
       <workItem from="1501515495583" duration="193000" />
-      <workItem from="1501520599643" duration="35989000" />
+      <workItem from="1501520599643" duration="36055000" />
     </task>
     <task id="LOCAL-00001" summary="update game scene">
       <created>1501795722537</created>
@@ -342,11 +333,18 @@
       <option name="project" value="LOCAL" />
       <updated>1501795722537</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add images">
+      <created>1501801318395</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1501801318395</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36182000" />
+    <option name="totallyTimeSpent" value="36248000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -378,7 +376,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update game scene" />
-    <option name="LAST_COMMIT_MESSAGE" value="update game scene" />
+    <MESSAGE value="add images" />
+    <option name="LAST_COMMIT_MESSAGE" value="add images" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -526,8 +525,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/scenes/Game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="42" lean-forward="true" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+        <state relative-caret-position="240">
+          <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
           <folding />
         </state>
       </provider>
