@@ -88,7 +88,7 @@
             this.currentGameStateFunction();
         }
     }
-    p.onTick = function (e) {
+    p.onTick = function () {
         this.run();
         stage.update();
     }

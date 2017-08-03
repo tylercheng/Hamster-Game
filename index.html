@@ -6,27 +6,38 @@
     <script src="js/lib/soundjs-0.5.2.min.js"></script>
     <script src="js/lib/preloadjs-0.4.1.min.js"></script>
     <script src="js/state.js"></script>
-    <script src="js/SimpleButton.js"></script>
-    <script src="js/PulsingOrb.js"></script>
+    <script src="js/components/SimpleButton.js"></script>
     <script src="js/scenes/GameMenu.js"></script>
     <script src="js/scenes/GameGuide.js"></script>
     <script src="js/scenes/Game.js"></script>
     <script src="js/scenes/GameOver.js"></script>
     <script src="js/OrbDestroyer.js"></script>
+    <script src="js/components/Hamster.js"></script>
+    <script src="js/components/RollingBackground.js"></script>
+    <script src="js/lib/ndgmr.Collision.js"></script>
 </head>
 
-<body onload="init();">
+<body onload="preload();">
 
 <canvas id="canvas" width="800" height="600" style="border: black solid 1px"></canvas>
-    <p></p>
 </body>
 
 <script>
-    var stage;
-    var canvas;
+    var queue;
+
+    function preload() {
+        queue = new createjs.LoadQueue();
+        queue.addEventListener("complete", init);
+        queue.loadManifest([
+            {id:"gameBg", src:"image/game-bg.png"},
+            {id:"menuBg", src:"image/menu-bg.jpg"},
+            {id:"obstacle", src:"image/obstacle.png"}
+        ]);
+    }
 
     function init() {
         window.game = window.game || {};
+        window.ui.queue = queue;
         game.main = new game.OrbDestroyer();
     }
 </script>

@@ -17,37 +17,32 @@
         this.Container_initialize();
         this.addBG();
         this.addTitle();
-        this.addOrbs();
+        this.addHamster();
         this.addButton();
     }
+
     p.addBG = function () {
-        var bg = new createjs.Shape();
-        bg.graphics.beginFill('#006633').drawRect(0, 0, canvas.width, canvas.height);
+        // var bg = new createjs.Shape();
+        // bg.graphics.beginFill('#006633').drawRect(0, 0, canvas.width, canvas.height);
+        // this.addChild(bg);
+        var bg = new createjs.Bitmap(window.ui.queue.getResult('menuBg'));
+        bg.width = canvas.width;
+        bg.height = canvas.height;
         this.addChild(bg);
-        //var bitmap = new createjs.bitmap("jungle-bg.jpg");
-        //this.addChild(bitmap);
+
     }
     p.addTitle = function () {
         this.titleTxt = new createjs.Text("Mr. Hamster's Adventure!", 'bold 46px Arial', '#000');
         this.titleTxt.x = canvas.width / 2;
-        this.titleTxt.y = 200;
+        this.titleTxt.y = canvas.width / 4;
         this.titleTxt.textAlign = 'center';
         this.addChild(this.titleTxt);
     }
-    p.addOrbs = function () {
-        //var i, orb;
-        //var orbContainer = new createjs.Container();
-        //var numOrbs = 5;
-        //var orbSize = 20;
-        //var orbPadding = 10;
-        //var orbsPosition = 300;
-        //for (i = 0; i < numOrbs; i++) {
-        //    orb = new PulsingOrb('#99CC00', orbSize);
-        //    orb.x = i * ((orbSize * 2) + orbPadding);
-        //    orbContainer.addChild(orb);
-        //}
-        //orbContainer.x = orbContainer.y = orbsPosition;
-        //this.addChild(orbContainer);
+    p.addHamster = function () {
+        var hamster = new FlyingHamster();
+        hamster.x = canvas.width / 2;
+        hamster.y = canvas.width / 2.5;
+            this.addChild(hamster);
     }
     p.addButton = function () {
         var btn, event;

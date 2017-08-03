@@ -37,7 +37,7 @@
         this.labelTxt.x = this.width / 2;
         this.labelTxt.y = 10;
         this.background = new createjs.Shape();
-        this.background.graphics.beginStroke(this.borderColor).beginFill(this.buttonColor).drawRect(0,0,this.width,this.height);
+        this.background.graphics.beginStroke(this.borderColor).beginFill(this.buttonColor).drawRoundRectComplex(0,0,this.width,this.height, 30, 30, 30, 30);
         this.addChild(this.background,this.labelTxt);
     }
     p.setButtonListeners = function (){
