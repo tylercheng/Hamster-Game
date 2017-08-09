@@ -34,13 +34,13 @@
     p.addTitle = function () {
         this.titleTxt = new createjs.Text("Mr. Hamster's Adventure!", 'bold 46px Arial', '#000');
         this.titleTxt.x = canvas.width / 2;
-        this.titleTxt.y = canvas.width / 4;
+        this.titleTxt.y = canvas.width / 5;
         this.titleTxt.textAlign = 'center';
         this.addChild(this.titleTxt);
     }
     p.addHamster = function () {
-        var hamster = new FlyingHamster();
-        hamster.x = canvas.width / 2;
+        var hamster = new Hamster();
+        hamster.x = canvas.width / 2 + hamster.getBounds().width / 2;
         hamster.y = canvas.width / 2.5;
             this.addChild(hamster);
     }

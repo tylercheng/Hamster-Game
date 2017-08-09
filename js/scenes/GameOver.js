@@ -13,44 +13,48 @@
     p.initialize = function () {
         this.Container_initialize();
         this.addBG();
-        this.addMessage();
+        this.addTitle();
         this.addButton();
+        this.addGameover();
     }
     p.addBG = function () {
         var bg = new createjs.Shape();
-        bg.graphics.beginFill('#006633').drawRect(0, 0, canvas.width, canvas.height);
+        bg.graphics.beginFill('#000').drawRect(0, 0, canvas.width, canvas.height);
         this.addChild(bg);
     }
-    p.addMessage = function () {
-        this.titleTxt = new createjs.Text("CONGRATULATION!", 'bold 46px Arial', '#99CC00');
-        this.titleTxt.x = canvas.width / 2;
-        this.titleTxt.y = 150;
-        this.titleTxt.textAlign = 'center';
+    p.addTitle = function () {
+        var text = "Your score: " + game.score;
+        this.titleTxt = new createjs.Text(text, 'bold 30px cursive', '#fff');
+        this.titleTxt.x = canvas.width / 8;
+        this.titleTxt.y = 100;
+        this.titleTxt.textAlign = 'left';
         this.addChild(this.titleTxt);
-
-        this.titleTxt = new createjs.Text("Mr. Hamster Passed All Abstacles!", '34px Arial', '#000');
-        this.titleTxt.x = canvas.width / 2;
-        this.titleTxt.y = 240;
-        this.titleTxt.textAlign = 'center';
-        this.addChild(this.titleTxt);
+    }
+    p.addGameover = function () {
+        var go = new createjs.Bitmap(window.ui.queue.getResult('gameOver'));
+        go.x = 90;
+        go.y = 200;
+        this.addChild(go);
     }
     p.addButton = function () {
-        var btn;
-        btn = new ui.SimpleButton('Main Menu');
-        btn.regX = btn.width / 2;
-        btn.x = canvas.width / 2;
-        btn.y = 320;
-        btn.setButton({ upColor: 'FF0000', color: '#99CC00', borderColor: '#000', overColor: '#900' });
+        var btn, event;
+        btn = new ui.SimpleButton('> Back to Main Menu <');
         btn.on('click', this.mainMenu, this);
-        this.addChild(btn);
-        btn = new ui.SimpleButton('Play Again');
         btn.regX = btn.width / 2;
         btn.x = canvas.width / 2;
-        btn.y = 390;
+        btn.y = 450;
         btn.setButton({ upColor: 'FF0000', color: '#99CC00', borderColor: '#000', overColor: '#900' });
+        this.addChild(btn);
+
+        btn = new ui.SimpleButton('> Play again <');
         btn.on('click', this.playGame, this);
+        btn.regX = btn.width / 2;
+        btn.x = canvas.width / 2;
+        btn.y = 500;
+        btn.setButton({ upColor: 'FF0000', color: '#99CC00', borderColor: '#000', overColor: '#900' });
         this.addChild(btn);
     }
+
     p.mainMenu = function (e) {
         this.dispatchEvent(game.GameStateEvents.MAIN_MENU);
     }

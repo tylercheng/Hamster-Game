@@ -3,9 +3,10 @@
     window.game = window.game || {}
 
     const SPACE_KEY = 32;
+    const S_KEY = 83;
     const levelOne = 10;
-    const levelTwo = 20;
-    const levelThree = 30;
+    const levelTwo = 15;
+    const levelThree = 20;
 
     function Game() {
         this.initialize();
@@ -14,173 +15,337 @@
     var p = Game.prototype = new createjs.Container();
 
     p.Container_initialize = p.initialize;
-    p.msgTxt = null;
-    p.obstacleContainer;
+    p.scoreboard = null;
     p.level = 1;
-    p.die = false;
-    p.obstacleCount = 0;
+    p.numLives = 3;
+    p.lifeBox = null;
     p.starsCount = 0;
-    p.obstacleUp;
-    p.obstacleDown;
-    p.hamster;
+    p.menuContainer = null;
+    p.isMenuDisplayed = false;
+
     p.jumpStart = false;
-    p.rotationDelta;
+    p.betweenLevels = false;
+    p.spaceKeyDown = false;
+    p.sKeyDown = false;
 
+    p.hamster = null;
+    p.jumpSpeed =  300;
+    p.diveSpeed = 200;
 
-    const gap = 250;
-    const masterPipeDelay = 78; // delay between pipes
-    p.pipeDelay = masterPipeDelay; //counter used to monitor delay
-    const jumpHeight = 120;
-    const jumpTime = 266;
+    p.obstaclesDown = null;
+    p.obstaclesUp = null;
+    p.obstacleDownPool = null;
+    p.obstacleUpPool = null;
+    p.gap = 220;
 
-    p.initialize = () => {
+    p.obstacleSpawnWaiter = 3000;
+    p.obstacleLastSpawnTime = null;
+
+    p.floor = null;
+    p.ceiling = null;
+    p.count = 0;
+
+    p.initialize = function(){
         this.Container_initialize();
+        this.setProperties();
         this.addBG();
+        this.buildSprites();
+        this.setControl();
+        this.setWalls();
         this.addButton();
-        this.obstacleContainer = new createjs.Container();
-        this.addChild(this.obstacleContainer);
-        this.addHamster();
     }
-    p.addBG = () => {
-        // var bg = new RollingBackground(window.ui.queue.getResult('gameBg'));
+
+    p.setProperties = function () {
+        this.obstacleDownPool = [];
+        this.obstacleUpPool = [];
+        this.obstaclesDown = [];
+        this.obstaclesUp = [];
+        this.betweenLevels = false;
+    }
+
+    p.addBG = function() {
         var bg = new createjs.Bitmap(window.ui.queue.getResult('gameBg'));
         bg.width = canvas.width;
         bg.scaleY = 1.2;
         this.addChild(bg);
     }
 
-    p.addButton = () => {
+    p.addButton = function() {
         var btn;
+        this.menuContainer = new createjs.Container();
         btn = new ui.SimpleButton('Main Menu');
         btn.regX = btn.width / 2;
         btn.x = canvas.width / 4;
         btn.y = 550;
         btn.setButton({ upColor: 'FF0000', color: '#99CC00', borderColor: '#000', overColor: '#900' });
         btn.on('click', this.mainMenu, this);
-        this.addChild(btn);
+        this.menuContainer.addChild(btn);
         btn = new ui.SimpleButton('View Controls');
         btn.regX = btn.width / 2;
         btn.x = canvas.width / 4 * 3;
         btn.y = 550;
         btn.setButton({ upColor: 'FF0000', color: '#99CC00', borderColor: '#000', overColor: '#900' });
         btn.on('click', this.gameGuide, this);
-        this.addChild(btn);
+        this.menuContainer.addChild(btn);
     }
 
-    p.addHamster = () => {
-        this.hamster = new FlyingHamster();
-        this.hamster.x = canvas.width / 4;
-        this.hamster.y = canvas.width / 3;
-        this.hamster.rotation = 0;
-        this.addChild(this.hamster);
-        document.onkeydown = this.handleKeyDown;
+    p.buildSprites = function () {
+        this.hamster = new Hamster();
+        this.hamster.on(this.hamster.FALL_COMPLETE, this.checkGame, this);
+        this.obstacleDownPool = new game.SpritePool(Obstacle, 10);
+        this.obstacleUpPool = new game.SpritePool(Obstacle, 10);
+        this.scoreboard = new game.Scoreboard();
+        this.lifeBox = new game.LifeBox(this.numLives);
+        this.addChild(this.scoreboard, this.hamster, this.lifeBox);
     }
 
-    p.handleKeyDown =  (e) => {
+    p.setWalls = function () {
+        this.floor = canvas.height - 50;
+        this.ceiling = this.hamster.getBounds().height;
+    }
+
+    p.setControl = function () {
+        document.onkeydown = (e) => { this.handleKeyDown(e); };
+        document.onkeyup = (e) => { this.handleKeyUp(e); };
+        //      document.onkeydown = this.handleKeyDown.bind(this);
+    }
+
+    p.handleKeyDown = function(e) {
         e = !e ? window.event : e;
-        if (e.keyCode == SPACE_KEY) {
-            this.handleJumpStart();
+        switch (e.keyCode) {
+            case SPACE_KEY:
+                this.spaceKeyDown = true;
+                break;
+            case S_KEY:
+                this.showMenu();
+                break;
         }
     }
 
-    p.handleJumpStart = () => {
-        if (!this.die) {
-            createjs.Tween.removeTweens(this.hamster);
-            this.hamster.gotoAndPlay("jump");
-            this.jumpStart = true;
+    p.handleKeyUp = function (e) {
+        e = !e ? window.event : e;
+        switch (e.keyCode) {
+            case SPACE_KEY:
+                this.spaceKeyDown = false;
+                break;
         }
     }
 
-    p.mainMenu = () => {
-        this.dispatchEvent(game.GameStateEvents.MAIN_MENU);
-    }
-    p.gameGuide = () => {
-        this.dispatchEvent(game.GameStateEvents.GAME_GUIDE);
+    p.showMenu = function() {
+        if(!this.isMenuDisplayed) {
+            createjs.Ticker.paused = true;
+            this.isMenuDisplayed = true;
+            this.addChild(this.menuContainer);
+        }
+        else {
+            createjs.Ticker.paused = false;
+            this.isMenuDisplayed = false;
+            this.removeChild(this.menuContainer);
+        }
     }
 
-    p.update = () => {
-        if (!this.die) {
-            if (this.pipeDelay == 0) {
-                this.obstacleDown = new createjs.Bitmap(window.ui.queue.getResult("obstacle"));
-                this.obstacleDown.x = canvas.width + 600
-                this.obstacleDown.y = (canvas.height - gap * 2) * Math.random() + gap * 1.5
-                this.obstacleContainer.addChild(this.obstacleDown);
-                // createjs.Tween.get(pipe).to({x:0 - pipe.image.width}, 5100)
-                this.obstacleUp = new createjs.Bitmap(window.ui.queue.getResult("obstacle"));
-                this.obstacleUp.scaleX = -1
-                this.obstacleUp.rotation = 180
-                this.obstacleUp.x = this.obstacleDown.x //+ pipe.image.width
-                this.obstacleUp.y = this.obstacleDown.y - gap
-                // createjs.Tween.get(pipe2).to({x:0 - pipe.image.width}, 5100)
-                this.obstacleContainer.addChild(this.obstacleUp);
-                this.pipeDelay = masterPipeDelay
-            } else {
-                this.pipeDelay = this.pipeDelay - 1
+
+    p.updateHamster = function() {
+        var nextY = this.hamster.y;
+        if (this.spaceKeyDown){
+            if(!this.jumpStart) {
+                this.jumpStart = true;
             }
-            for (var i = 0; i < this.obstacleContainer.getNumChildren(); i++) {
-                var obstacle = this.obstacleContainer.getChildAt(i);
-                if (obstacle) {
-                    if (true) { // tried replacing true with this, but it's off: pipe.x < bird.x + 92 && pipe.x > bird.x
-                        var collision = ndgmr.checkRectCollision(obstacle, this.hamster, 1, true)
-                        if (collision) {
-                            if (collision.width > 8 && collision.height > 8) {
-                                this.die = true;
-                            }
-                        }
-                    }
-                    obstacle.x = (obstacle.x - 60 * 300);
-                    if (obstacle.x <= 338 && obstacle.rotation == 0 && obstacle.name != "counted") {
-                        obstacle.name = "counted" //using the pipe name to count pipes
-                    }
-                    if (obstacle.x + obstacle.image.width <= -obstacle.w) {
-                        this.obstacleContainer.removeChild(obstacle)
-                    }
+            nextY -= this.jumpSpeed * this.delta / 1000 ;
+            if (nextY < this.ceiling) {
+                nextY = this.ceiling;
+            }
+        }
+        else {
+            if(this.jumpStart) {
+                nextY += this.diveSpeed * this.delta / 1000;
+                if (nextY > this.floor) {
+                    nextY = this.floor;
                 }
             }
         }
+        this.hamster.nextY = nextY;
+    }
 
-        if (this.jumpStart == true) {
-            this.jumpStart = false
-            if (this.hamster.rotation < 0) {
-                this.rotationDelta = (-this.hamster.rotation - 20)/5
-            } else {
-                this.rotationDelta = (this.hamster.rotation + 20)/5
+
+    p.updateObstacles = function() {
+        var obstacleDown, obstacleUp, i, velX;
+        var len = this.obstaclesDown.length - 1;
+        if(!this.hamster.shouldDie) {
+            for (i = len; i >= 0; i--) {
+                obstacleDown = this.obstaclesDown[i];
+                obstacleUp = this.obstaclesUp[i];
+                velX = obstacleDown.speed * this.delta / 1000;
+                obstacleDown.nextX = obstacleUp.nextX = obstacleDown.x - velX;
+                if(obstacleDown.shouldCount && obstacleUp.shouldCount && obstacleDown.x + obstacleDown.getBounds().width <= this.hamster.x){
+                    ++this.count;
+                    obstacleDown.shouldCount = false;
+                    obstacleUp.shouldCount = false;
+                    this.scoreboard.updateScore(this.count);
+                }
+
+                if (obstacleDown.nextX < - obstacleDown.getBounds().width) {
+                    obstacleDown.reset();
+                    obstacleUp.reset();
+                    this.obstacleDownPool.returnSprite(obstacleDown);
+                    this.obstacleUpPool.returnSprite(obstacleUp);
+                    this.removeChild(obstacleDown);
+                    this.removeChild(obstacleUp);
+                    this.obstaclesDown.splice(i, 1);
+                    this.obstaclesUp.splice(i, 1);
+                }
             }
-            if (this.hamster.y < -200) {
-                this.hamster.y = -200
-            }
-            createjs.Tween.get(this.hamster)
-                .to({y:this.hamster.y - this.rotationDelta, rotation: -20}, this.rotationDelta, createjs.Ease.linear) //rotate to jump position and jump bird
-                .to({y:this.hamster.y - jumpHeight, rotation: -20}, jumpTime - this.rotationDelta, createjs.Ease.quadOut) //rotate to jump position and jump bird
-                .to({y:this.hamster.y}, jumpTime, createjs.Ease.quadIn) //reverse jump for smooth arch
-                .to({y:this.hamster.y + 200, rotation: 90}, (380)/1.5, createjs.Ease.linear) //rotate back/
-                .to({y:canvas.height - 30}, (canvas.height - (this.hamster.y+200))/1.5, createjs.Ease.linear); //drop to the bedrock
         }
     }
 
-    p.render = () => {
+    p.renderHamster = function () {
+        this.hamster.y = this.hamster.nextY;
+    }
+
+    p.renderObstacles = function() {
+        var obstacleDown, obstacleUp, i;
+        var len = this.obstaclesDown.length - 1;
+        for (i = len; i >= 0; i--) {
+            obstacleDown = this.obstaclesDown[i];
+            obstacleUp = this.obstaclesUp[i];
+                obstacleDown.x = obstacleDown.nextX;
+                obstacleUp.x = obstacleUp.nextX;
+        }
+    }
+
+    p.checkForObstacleSpawn = function (time) {
+        if (time - this.obstacleLastSpawnTime > this.obstacleSpawnWaiter) {
+            this.spawnObstacle();
+            this.obstacleLastSpawnTime = time;
+        }
+    }
+
+    p.spawnObstacle = function () {
+        if(this.jumpStart) {
+            var obstacleDown = this.obstacleDownPool.getSprite();
+            var obstacleUp = this.obstacleUpPool.getSprite();
+            obstacleUp.rotation = 180;
+            obstacleDown.scaleX = -1;
+            obstacleDown.x = obstacleUp.x = canvas.width + obstacleDown.getBounds().width;
+            obstacleDown.y = Utils.getRandomNumber(canvas.height - obstacleDown.getBounds().height + 50, canvas.height - 120);
+            obstacleUp.y = obstacleDown.y - this.gap;
+            this.addChild(obstacleDown, obstacleUp);
+            this.obstaclesDown.push(obstacleDown);
+            this.obstaclesUp.push(obstacleUp);
+        }
 
     }
 
-    p.checkGame = () => {
-        if (this.die) {
+    p.mainMenu = function() {
+        this.dispatchEvent(game.GameStateEvents.MAIN_MENU);
+    }
+    p.gameGuide = function() {
+        this.dispatchEvent(game.GameStateEvents.GAME_GUIDE);
+    }
+
+    p.update = function() {
+        this.updateHamster();
+        this.updateObstacles();
+    }
+
+    p.render = function() {
+        this.renderHamster();
+        this.renderObstacles();
+    }
+
+    p.checkBump = function() {
+        var obstacleDown, obstacleUp, i;
+        var len = this.obstaclesDown.length - 1;
+        for (i = len; i >= 0; i--) {
+            obstacleDown = this.obstaclesDown[i];
+            obstacleUp = this.obstaclesUp[i];
+            if (obstacleDown.x < this.hamster.x + this.hamster.getBounds().width && obstacleDown.x + obstacleDown.getBounds().width > this.hamster.x) {
+                var collision1 = ndgmr.checkPixelCollision(this.hamster, obstacleDown);
+                var collision2 = ndgmr.checkPixelCollision(this.hamster, obstacleUp);
+                if (collision1 || collision2) {
+                    this.hamster.shouldDie = true;
+                    break;
+                }
+                else {
+                    obstacleDown.shouldCount = true;
+                    obstacleUp.shouldCount = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    p.checkHamster = function(){
+        if (this.hamster.shouldDie) {
+            this.numLives--;
+            this.hamster.goDie();
+            this.lifeBox.removeLife();
+            this.betweenLevels = true;
+        }
+    }
+
+    p.checkGame = function() {
+        if (this.numLives > 0) {
+            this.obstacleDownPool = new game.SpritePool(Obstacle, 10);
+            this.obstacleUpPool = new game.SpritePool(Obstacle, 10);
+            this.hamster.reset();
+            this.obstaclesDown = [];
+            this.obstaclesUp = [];
+            this.count = 0;
+            this.jumpStart = false;
+            this.betweenLevels = false;
+        }
+        else {
+            game.score = this.scoreboard.getScore();
+            this.dispose();
             this.dispatchEvent(game.GameStateEvents.GAME_OVER);
         }
-        if(this.level == 1 && this.obstacleCount == levelOne) {
+    }
 
+
+    p.checkLevel = function () {
+        if(this.level == 1 && this.count == levelOne) {
+            this.level = 2;
+            this.count = 0;
+            this.scoreboard.updateScore(this.count);
+            this.obstacleSpawnWaiter -= 500;
+            this.gap -= 20;
+            this.numLives = 3;
+            this.lifeBox.reset();
         }
-        if(this.level == 2 && this.obstacleCount == levelTwo) {
-
+        if(this.level == 2 && this.count == levelTwo) {
+            this.level = 3;
+            this.count = 0;
+            this.scoreboard.updateScore(this.count);
+            this.obstacleSpawnWaiter -= 500;
+            this.gap -= 20;
+            this.numLives = 3;
+            this.lifeBox.reset();
         }
-        if(this.level == 3 && this.obstacleCount == levelThree) {
+        if(this.level == 3 && this.count == levelThree) {
+            this.dispatchEvent(game.GameStateEvents.GAME_WIN);
+        }
 
+    }
+
+
+    p.run = function(tickEvent) {
+        this.delta = tickEvent.delta;
+        if(!this.isMenuDisplayed) {
+            if (!this.betweenLevels) {
+                this.update();
+                this.render();
+                this.checkForObstacleSpawn(tickEvent.time);
+                this.checkBump();
+                this.checkHamster();
+                this.checkLevel();
+            }
         }
     }
 
-    p.run = () => {
-        this.update();
-        this.render();
-        this.checkGame();
+    p.dispose = function () {
+        document.onkeydown = null;
+        document.onkeyup = null;
     }
 
     window.game.Game = Game;
