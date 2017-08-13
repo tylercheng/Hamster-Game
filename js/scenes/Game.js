@@ -341,7 +341,7 @@
             this.obstacleSpawnWaiter -= 500;
             this.gap -= 20;
             this.numLives = 3;
-            this.lifeBox.reset();
+           //this.lifeBox.reset();
             this.showLevelUp();
         }
         if(this.level == 2 && this.count == levelTwo) {
@@ -351,7 +351,7 @@
             this.obstacleSpawnWaiter -= 500;
             this.gap -= 20;
             this.numLives = 3;
-            this.lifeBox.reset();
+            //this.lifeBox.reset();
             this.showLevelUp();
         }
         if(this.level == 3 && this.count == levelThree) {

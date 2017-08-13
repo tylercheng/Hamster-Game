@@ -53,11 +53,12 @@
         life.play();
     }
 
-    p.reset = function () {
-        this.numLives = 3;
-        this.buildSprites();
-        this.positionBox();
-    }
+
+    // p.reset = function () {
+    //     this.numLives = 3;
+    //     this.buildSprites();
+    //     this.positionBox();
+    // }
 
     window.game.LifeBox = LifeBox;
 
