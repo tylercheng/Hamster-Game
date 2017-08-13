@@ -44,6 +44,7 @@
     p.floor = null;
     p.ceiling = null;
     p.count = 0;
+    p.score = 0;
 
     p.levelUp = null;
 
@@ -200,6 +201,7 @@
                 obstacleDown.nextX = obstacleUp.nextX = obstacleDown.x - velX;
                 if(obstacleDown.shouldCount && obstacleUp.shouldCount && obstacleDown.x + obstacleDown.getBounds().width <= this.hamster.x){
                     ++this.count;
+                    ++this.score;
                     obstacleDown.shouldCount = false;
                     obstacleUp.shouldCount = false;
                    // this.scoreboard.updateScore(this.count);
@@ -221,7 +223,7 @@
     }
 
     p.updateScore = function () {
-        this.scoreboard.updateScore(this.count);
+        this.scoreboard.updateScore(this.score);
     }
 
     p.renderHamster = function () {
@@ -340,7 +342,7 @@
             this.count = 0;
             this.obstacleSpawnWaiter -= 500;
             this.gap -= 20;
-            this.numLives = 3;
+            //this.numLives = 3;
            //this.lifeBox.reset();
             this.showLevelUp();
         }
@@ -350,11 +352,25 @@
             this.count = 0;
             this.obstacleSpawnWaiter -= 500;
             this.gap -= 20;
-            this.numLives = 3;
+            //this.numLives = 3;
             //this.lifeBox.reset();
             this.showLevelUp();
         }
         if(this.level == 3 && this.count == levelThree) {
+            switch(this.numLives){
+                case 3:
+                    this.score += 40;
+
+                    break;
+                case 2:
+                    this.score += 20;
+                    break;
+                case 1:
+                    break;
+            }
+            this.scoreboard.updateScore(this.score);
+            game.score = this.scoreboard.getScore();
+            this.dispose();
             this.dispatchEvent(game.GameStateEvents.GAME_WIN);
         }
 

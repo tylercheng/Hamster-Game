@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5796b301-eb42-46b1-a176-b43ebf862327" name="Default" comment="">
+    <list default="true" id="5796b301-eb42-46b1-a176-b43ebf862327" name="Default" comment="update score machenism">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scenes/Game.js" afterPath="$PROJECT_DIR$/js/scenes/Game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/sprites/LifeBox.js" afterPath="$PROJECT_DIR$/js/sprites/LifeBox.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scenes/GameWin.js" afterPath="$PROJECT_DIR$/js/scenes/GameWin.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,8 +32,8 @@
       <file leaf-file-name="Game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/scenes/Game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="353" column="14" lean-forward="false" selection-start-line="353" selection-start-column="14" selection-end-line="353" selection-end-column="14" />
+            <state relative-caret-position="180">
+              <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -82,8 +82,18 @@
       <file leaf-file-name="GameOver.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/scenes/GameOver.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+            <state relative-caret-position="-175">
+              <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FlyingHamster.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/FlyingHamster.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-404">
+              <caret line="71" column="30" lean-forward="false" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -92,8 +102,8 @@
       <file leaf-file-name="GameWin.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/scenes/GameWin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="7" lean-forward="false" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="30" />
+            <state relative-caret-position="262">
+              <caret line="31" column="42" lean-forward="false" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -109,26 +119,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Hamster.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/sprites/Hamster.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>obstaclePool</find>
-      <find>floor</find>
-      <find>return</find>
-      <find>hamster.x</find>
-      <find>dive</find>
-      <find>checkHamster</find>
       <find>shouldcount</find>
       <find>shouldCount</find>
       <find>jumpSpee</find>
@@ -142,17 +136,23 @@
       <find>GAME</find>
       <find>OrbDestroyer</find>
       <find>hamster.reset</find>
-      <find>score</find>
       <find>obstaclesDown</find>
       <find>removeLife</find>
       <find>shouldDie</find>
       <find>removel</find>
       <find>betweenLevels</find>
       <find>menu</find>
-      <find>numLives</find>
-      <find>count</find>
       <find>scoreboard</find>
       <find>lifeBox</find>
+      <find>gap</find>
+      <find>this.count</find>
+      <find>updateScore</find>
+      <find>numLives</find>
+      <find>count</find>
+      <find>Game_over</find>
+      <find>game.score</find>
+      <find>score</find>
+      <find>this.score</find>
     </findStrings>
     <replaceStrings>
       <replace>Hamster</replace>
@@ -188,10 +188,10 @@
         <option value="$PROJECT_DIR$/js/FlyingHamster.js" />
         <option value="$PROJECT_DIR$/js/sprites/Hamster.js" />
         <option value="$PROJECT_DIR$/js/scenes/GameOver.js" />
-        <option value="$PROJECT_DIR$/js/scenes/GameWin.js" />
         <option value="$PROJECT_DIR$/js/scenes/GameMenu.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/sprites/LifeBox.js" />
+        <option value="$PROJECT_DIR$/js/scenes/GameWin.js" />
         <option value="$PROJECT_DIR$/js/scenes/Game.js" />
       </list>
     </option>
@@ -470,7 +470,7 @@
       <workItem from="1501804099773" duration="2802000" />
       <workItem from="1501807392113" duration="551000" />
       <workItem from="1501857895336" duration="59429000" />
-      <workItem from="1502243460709" duration="15068000" />
+      <workItem from="1502243460709" duration="17936000" />
     </task>
     <task id="LOCAL-00001" summary="update game scene">
       <created>1501795722537</created>
@@ -514,11 +514,25 @@
       <option name="project" value="LOCAL" />
       <updated>1502655809129</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="change life setting">
+      <created>1502656427987</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1502656427987</updated>
+    </task>
+    <task id="LOCAL-00008" summary="change life setting">
+      <created>1502656465441</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1502656465441</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115476000" />
+    <option name="totallyTimeSpent" value="118344000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -606,7 +620,8 @@
     <MESSAGE value="add images" />
     <MESSAGE value="implement level one to three" />
     <MESSAGE value="bug fixing and add music" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug fixing and add music" />
+    <MESSAGE value="change life setting" />
+    <option name="LAST_COMMIT_MESSAGE" value="change life setting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -890,14 +905,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/FlyingHamster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="71" column="30" lean-forward="false" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/managers/spritePool.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -930,38 +937,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/sprites/Obstacle.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="33" column="26" lean-forward="false" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/scenes/GameOver.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/scenes/GameMenu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/scenes/GameWin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="7" lean-forward="false" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/scenes/GameGuide.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1220">
@@ -978,6 +953,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/scenes/GameMenu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/scenes/GameWin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="31" column="42" lean-forward="false" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/FlyingHamster.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-404">
+          <caret line="71" column="30" lean-forward="false" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/scenes/GameOver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-175">
+          <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/sprites/LifeBox.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="346">
@@ -986,10 +993,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/sprites/Obstacle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="33" column="26" lean-forward="false" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/scenes/Game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="353" column="14" lean-forward="false" selection-start-line="353" selection-start-column="14" selection-end-line="353" selection-end-column="14" />
+        <state relative-caret-position="180">
+          <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
           <folding />
         </state>
       </provider>

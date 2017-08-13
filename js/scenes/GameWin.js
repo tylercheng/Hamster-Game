@@ -20,26 +20,17 @@
         createjs.Sound.play("gameWinSound");
     }
 
+
     p.addBG = function () {
         var bg = new createjs.Bitmap(window.ui.queue.getResult('guideBg'));
         bg.width = canvas.width;
         bg.height = canvas.height;
         this.addChild(bg);
     }
+
     p.addTitle = function () {
-        // this.titleTxt = new createjs.Text("Your score: ", 'bold 30px cursive', '#fff');
-        // this.titleTxt.x = canvas.width / 8;
-        // this.titleTxt.y = 50;
-        // this.titleTxt.textAlign = 'left';
-        // this.addChild(this.titleTxt);
-
-        // this.titleTxt = new createjs.Text("Your stars: ", 'bold 30px cursive', '#fff');
-        // this.titleTxt.x = canvas.width / 8;
-        // this.titleTxt.y = 80;
-        // this.titleTxt.textAlign = 'left';
-        // this.addChild(this.titleTxt);
-
-        this.titleTxt = new createjs.Text("CONGRATULATIONS!", 'bold 42px cursive', '#fff');
+        var text = "Your score: " + game.score;
+        this.titleTxt = new createjs.Text(text, 'bold 42px cursive', '#fff');
         this.titleTxt.x = canvas.width / 2;
         this.titleTxt.y = 140;
         this.titleTxt.textAlign = 'center';
