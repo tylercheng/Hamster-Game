@@ -51,7 +51,10 @@
     var queue;
 
     function preload() {
+        createjs.Sound.initializeDefaultPlugins();
         queue = new createjs.LoadQueue();
+        queue.installPlugin(createjs.Sound);
+        createjs.Sound.alternateExtensions = ["ogg"];
         queue.addEventListener("complete", init);
         queue.loadManifest([
             {id:"gameBg", src:"image/game-bg.png"},
@@ -62,7 +65,13 @@
             { id: "guideFinger", src: "image/finger.png" },
             { id: "gameOver", src: "image/gameover.png" },
             { id: "gameWin", src: "image/win.png" },
-        ]);
+            { id:"levelUp", src: "image/levelUp.jpg"},
+            { id: "gameMenuSound", src: "sounds/summer.mp3" },
+            { id: "gameInSound", src: "sounds/FamiliarRoads.mp3" },
+            { id: "gameOverSound", src: "sounds/gameOver.mp3" },
+            { id: "gameWinSound", src: "sounds/FamiliarRoads.mp3" },
+            { id: "bumpSound", src: "sounds/Smashing.mp3" },
+        ])
     }
 
     function init() {

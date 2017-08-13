@@ -68,7 +68,7 @@
 
     p.reset = function () {
         this.shouldDie = false;
-        this.gotoAndStop('fly');
+        this.gotoAndPlay("jump");
         this.regX = this.getBounds().width / 2;
         this.regY = this.getBounds().height / 2;
         this.x = canvas.width / 2;

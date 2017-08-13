@@ -4,9 +4,9 @@
 
     const SPACE_KEY = 32;
     const S_KEY = 83;
-    const levelOne = 10;
-    const levelTwo = 15;
-    const levelThree = 20;
+    const levelOne = 2;
+    const levelTwo = 5;
+    const levelThree = 10;
 
     function Game() {
         this.initialize();
@@ -19,7 +19,6 @@
     p.level = 1;
     p.numLives = 3;
     p.lifeBox = null;
-    p.starsCount = 0;
     p.menuContainer = null;
     p.isMenuDisplayed = false;
 
@@ -32,6 +31,7 @@
     p.jumpSpeed =  300;
     p.diveSpeed = 200;
 
+    p.obstacleContainer = null;
     p.obstaclesDown = null;
     p.obstaclesUp = null;
     p.obstacleDownPool = null;
@@ -45,6 +45,8 @@
     p.ceiling = null;
     p.count = 0;
 
+    p.levelUp = null;
+
     p.initialize = function(){
         this.Container_initialize();
         this.setProperties();
@@ -53,6 +55,9 @@
         this.setControl();
         this.setWalls();
         this.addButton();
+        this.addLevelUp();
+        createjs.Sound.stop();
+        createjs.Sound.play("gameInSound");
     }
 
     p.setProperties = function () {
@@ -61,6 +66,8 @@
         this.obstaclesDown = [];
         this.obstaclesUp = [];
         this.betweenLevels = false;
+        this.obstacleContainer = new createjs.Container();
+        this.levelUp = new createjs.Container();
     }
 
     p.addBG = function() {
@@ -96,7 +103,7 @@
         this.obstacleUpPool = new game.SpritePool(Obstacle, 10);
         this.scoreboard = new game.Scoreboard();
         this.lifeBox = new game.LifeBox(this.numLives);
-        this.addChild(this.scoreboard, this.hamster, this.lifeBox);
+        this.addChild(this.scoreboard, this.obstacleContainer, this.hamster, this.lifeBox, this.levelUp);
     }
 
     p.setWalls = function () {
@@ -108,6 +115,19 @@
         document.onkeydown = (e) => { this.handleKeyDown(e); };
         document.onkeyup = (e) => { this.handleKeyUp(e); };
         //      document.onkeydown = this.handleKeyDown.bind(this);
+    }
+
+    p.addLevelUp = function(){
+        var highlight = new createjs.Shape();
+        highlight.graphics.beginFill("#FFFF66").drawRect(0, 0, 150, 50);
+
+        var txt = new createjs.Text("level up", "bold 35px Arial");
+        txt.x = highlight.x = -50;
+        txt.y = highlight.y = canvas.width/3;
+
+        this.levelUp.addChild(highlight, txt);
+
+        this.levelUp.visible = false;
     }
 
     p.handleKeyDown = function(e) {
@@ -161,6 +181,7 @@
                 nextY += this.diveSpeed * this.delta / 1000;
                 if (nextY > this.floor) {
                     nextY = this.floor;
+                    this.hamster.shouldDie = true;
                 }
             }
         }
@@ -181,7 +202,7 @@
                     ++this.count;
                     obstacleDown.shouldCount = false;
                     obstacleUp.shouldCount = false;
-                    this.scoreboard.updateScore(this.count);
+                   // this.scoreboard.updateScore(this.count);
                 }
 
                 if (obstacleDown.nextX < - obstacleDown.getBounds().width) {
@@ -189,13 +210,18 @@
                     obstacleUp.reset();
                     this.obstacleDownPool.returnSprite(obstacleDown);
                     this.obstacleUpPool.returnSprite(obstacleUp);
-                    this.removeChild(obstacleDown);
-                    this.removeChild(obstacleUp);
+                    //this.removeChild(obstacleDown);
+                    //this.removeChild(obstacleUp);
+                    this.obstacleContainer.removeChild(obstacleDown, obstacleUp);
                     this.obstaclesDown.splice(i, 1);
                     this.obstaclesUp.splice(i, 1);
                 }
             }
         }
+    }
+
+    p.updateScore = function () {
+        this.scoreboard.updateScore(this.count);
     }
 
     p.renderHamster = function () {
@@ -229,7 +255,8 @@
             obstacleDown.x = obstacleUp.x = canvas.width + obstacleDown.getBounds().width;
             obstacleDown.y = Utils.getRandomNumber(canvas.height - obstacleDown.getBounds().height + 50, canvas.height - 120);
             obstacleUp.y = obstacleDown.y - this.gap;
-            this.addChild(obstacleDown, obstacleUp);
+            //this.addChild(obstacleDown, obstacleUp);
+            this.obstacleContainer.addChild(obstacleDown, obstacleUp);
             this.obstaclesDown.push(obstacleDown);
             this.obstaclesUp.push(obstacleUp);
         }
@@ -246,6 +273,7 @@
     p.update = function() {
         this.updateHamster();
         this.updateObstacles();
+        this.updateScore();
     }
 
     p.render = function() {
@@ -264,6 +292,7 @@
                 var collision2 = ndgmr.checkPixelCollision(this.hamster, obstacleUp);
                 if (collision1 || collision2) {
                     this.hamster.shouldDie = true;
+                    createjs.Sound.play("bumpSound");
                     break;
                 }
                 else {
@@ -288,6 +317,7 @@
         if (this.numLives > 0) {
             this.obstacleDownPool = new game.SpritePool(Obstacle, 10);
             this.obstacleUpPool = new game.SpritePool(Obstacle, 10);
+            this.obstacleContainer.removeAllChildren();
             this.hamster.reset();
             this.obstaclesDown = [];
             this.obstaclesUp = [];
@@ -305,22 +335,24 @@
 
     p.checkLevel = function () {
         if(this.level == 1 && this.count == levelOne) {
+            this.betweenLevels = true;
             this.level = 2;
             this.count = 0;
-            this.scoreboard.updateScore(this.count);
             this.obstacleSpawnWaiter -= 500;
             this.gap -= 20;
             this.numLives = 3;
             this.lifeBox.reset();
+            this.showLevelUp();
         }
         if(this.level == 2 && this.count == levelTwo) {
+            this.betweenLevels = true;
             this.level = 3;
             this.count = 0;
-            this.scoreboard.updateScore(this.count);
             this.obstacleSpawnWaiter -= 500;
             this.gap -= 20;
             this.numLives = 3;
             this.lifeBox.reset();
+            this.showLevelUp();
         }
         if(this.level == 3 && this.count == levelThree) {
             this.dispatchEvent(game.GameStateEvents.GAME_WIN);
@@ -328,6 +360,19 @@
 
     }
 
+
+    p.showLevelUp = function () {
+
+        this.levelUp.visible = true;
+        this.levelUp.x = -50;
+           createjs.Tween.get(this.levelUp, {loop: false})
+            .to({x: canvas.width/2 }, 2000, createjs.Ease.bounceOut)
+               .to({x: canvas.width}, 2000)
+               .call(function () {
+                   this.levelUp.visible = false;
+                   this.betweenLevels = false;
+               }.bind(this))
+    }
 
     p.run = function(tickEvent) {
         this.delta = tickEvent.delta;

@@ -16,7 +16,10 @@
         this.addTitle();
         this.addButton();
         this.addGameover();
+        createjs.Sound.stop();
+        createjs.Sound.play("gameOverSound");
     }
+
     p.addBG = function () {
         var bg = new createjs.Shape();
         bg.graphics.beginFill('#000').drawRect(0, 0, canvas.width, canvas.height);

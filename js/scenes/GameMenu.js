@@ -19,12 +19,12 @@
         this.addTitle();
         this.addHamster();
         this.addButton();
+        createjs.Sound.stop();
+        new createjs.Sound.play("gameMenuSound");
     }
 
+
     p.addBG = function () {
-        // var bg = new createjs.Shape();
-        // bg.graphics.beginFill('#006633').drawRect(0, 0, canvas.width, canvas.height);
-        // this.addChild(bg);
         var bg = new createjs.Bitmap(window.ui.queue.getResult('menuBg'));
         bg.width = canvas.width;
         bg.height = canvas.height;

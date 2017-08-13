@@ -16,7 +16,10 @@
         this.addTitle();
         this.addButton();
         this.addGamewin();
+        createjs.Sound.stop();
+        createjs.Sound.play("gameWinSound");
     }
+
     p.addBG = function () {
         var bg = new createjs.Bitmap(window.ui.queue.getResult('guideBg'));
         bg.width = canvas.width;
