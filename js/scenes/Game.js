@@ -4,9 +4,9 @@
 
     const SPACE_KEY = 32;
     const S_KEY = 83;
-    const levelOne = 2;
-    const levelTwo = 5;
-    const levelThree = 10;
+    const levelOne = 10;
+    const levelTwo = 15;
+    const levelThree = 20;
 
     function Game() {
         this.initialize();
